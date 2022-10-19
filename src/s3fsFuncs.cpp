@@ -1,11 +1,11 @@
 #include "main.hpp"
 #include "Logger.hpp"
+#include "config.h"
 #include <fstream>
 #include <sstream>
 #include <string.h>
 #include <nlohmann/json.hpp>
-const char commit_hash_version[]= "41f3cf6";
-const char product_version[]    = "1.0.0";
+
 const char* VersionS3fsCredential(bool detail)
 {
         const char short_version_form[]  = "s3fs-fuse-oidc-vault-minio-lib : Version %s (%s)";
@@ -76,12 +76,12 @@ bool FreeS3fsCredential(char** pperrstr)
         }
 
         //
-        // Clean s3fs credentials file
+        // Restore placeholder s3fs credentials
         //
         auto home = std::getenv("HOME") ? std::getenv("HOME") : "/tmp";
         std::string s3fs_credfile = "/.passwd-s3fs";
         std::ofstream ofs(home + s3fs_credfile, std::ofstream::trunc);
-        ofs << "\n";
+        ofs << "access:secret\n";
         ofs.close();
 
         return true;

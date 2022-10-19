@@ -1,0 +1,5 @@
+build/*
+config.h
+commit_hash
+product_version
+oidc-vault-minio-profile

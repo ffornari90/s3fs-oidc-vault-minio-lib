@@ -1,7 +1,7 @@
 #include "main.hpp"
 #include "Logger.hpp"
-//#include <fstream>
-//#include <nlohmann/json.hpp>
+#include <fstream>
+#include <nlohmann/json.hpp>
 
 std::optional<std::string> readSecretValue(const Vault::Client &vaultClient, const Vault::Path path,
                                            const std::string mount, const Vault::KeyValue::Version version) {
@@ -11,14 +11,14 @@ std::optional<std::string> readSecretValue(const Vault::Client &vaultClient, con
 
     if (auto response = keyValue.read(path); response) {
       logger->Log(__FILE__, __LINE__, "Secrets read successfully at " + path, LogLevel::INFO);
-      /*nlohmann::json data = nlohmann::json::parse(response.value());
+      nlohmann::json data = nlohmann::json::parse(response.value());
       auto access_key = data["data"]["accessKeyId"].get<std::string>();
       auto secret_key = data["data"]["secretAccessKey"].get<std::string>();
-      auto home = std::getenv("HOME") ? std::getenv("HOME") : "";
+      auto home = std::getenv("HOME") ? std::getenv("HOME") : "/tmp";
       std::string s3fs_credfile = "/.passwd-s3fs";
       std::ofstream ofs(home + s3fs_credfile, std::ofstream::trunc);
       ofs << access_key + ":" + secret_key + "\n";
-      ofs.close();*/
+      ofs.close();
       return response.value();
     }
     else

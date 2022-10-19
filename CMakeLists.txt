@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.12)
-project(vault_minio VERSION 0.51.0 DESCRIPTION "Software using Vault bindings for C++ to provide MinIO STS")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -7,11 +6,32 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(CURL)
 
 #
+# Create version information
+#
+execute_process(COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/make_version_files.sh commit_hash)
+execute_process(COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/make_version_files.sh product_version)
+file(READ commit_hash COMMIT_HASH)
+file(READ product_version PRODUCT_VERSION)
+
+#
+# Set project information
+#
+project(s3fs_oidc_vault_minio LANGUAGES CXX)
+project(s3fs_oidc_vault_minio VERSION ${PRODUCT_VERSION})
+project(s3fs_oidc_vault_minio DESCRIPTION "Software using oidc-agent and Vault bindings for C++ to perform MinIO STS")
+
+#
+# Create config.h
+#
+configure_file(config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/config.h)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-attributes")
+
+#
 # Set Library information
 #
 set(LIB_NAME   "oidc-vault-minio")
 set(LIB_SRC    "src/main.cpp" "src/readSecretValue.cpp" "src/configureClient.cpp" "src/getOIDCToken.cpp" "src/s3fsFuncs.cpp" "src/Logger.cpp")
-set(LIB_HEADER "src/main.hpp" "src/Logger.hpp")
+set(LIB_HEADER "src/main.hpp" "src/Logger.hpp" "${CMAKE_CURRENT_SOURCE_DIR}/config.h")
 set(LIB_SAMPLE "src/oidc_vault_minio_test.cpp")
 set(LIB_TYPE   "SHARED")
 
@@ -19,8 +39,8 @@ set(LIB_TYPE   "SHARED")
 # For building Library
 #
 add_library(${LIB_NAME} ${LIB_TYPE} ${LIB_SRC})
-target_include_directories(${LIB_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} /usr/local/include)
-target_link_libraries(${LIB_NAME} /usr/lib/x86_64-linux-gnu/liboidc-agent.so /usr/local/lib/libvault.so curl)
+target_include_directories(${LIB_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} /usr/include /usr/local/include)
+target_link_libraries(${LIB_NAME} oidc-agent vault curl)
 
 #
 # For building test file.
