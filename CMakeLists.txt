@@ -3,6 +3,17 @@ cmake_minimum_required(VERSION 3.12)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-attributes")
+
+include(ExternalProject)
+
+ExternalProject_Add(s3fs-ggtakec
+    GIT_REPOSITORY https://github.com/ggtakec/s3fs-fuse
+    GIT_TAG extcred_mod
+    CONFIGURE_COMMAND cp -R ../s3fs-ggtakec/. . && ./autogen.sh
+    COMMAND ./configure
+)
+
 find_package(CURL)
 
 #
@@ -24,7 +35,6 @@ project(s3fs_oidc_vault_minio DESCRIPTION "Software using oidc-agent and Vault b
 # Create config.h
 #
 configure_file(config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/config.h)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-attributes")
 
 #
 # Set Library information
