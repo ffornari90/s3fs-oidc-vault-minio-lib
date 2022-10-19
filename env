@@ -1,0 +1,6 @@
+export VAULT_HOST=""
+export VAULT_PORT=""
+export VAULT_ROLE=""
+export VAULT_TLS_ENABLE=""
+export VAULT_TLS_VERIFY=""
+export OIDC_CLIENT_NAME=""
