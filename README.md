@@ -1,6 +1,6 @@
 # s3fs-fuse-oidc-vault-minio-lib
 
-Authentication module using [indigo-dc/oidc-agent](https://github.com/indigo-dc/oidc-agent) and [Hashicorp Vault](https://github.com/hashicorp/vault) for [s3fs-fuse](https://github.com/s3fs-fuse/s3fs-fuse/) to locally mount MinIO buckets.
+Authentication module using [indigo-dc/oidc-agent](https://github.com/indigo-dc/oidc-agent) and [Hashicorp Vault](https://github.com/hashicorp/vault) for [s3fs-fuse](https://github.com/s3fs-fuse/s3fs-fuse/) to locally mount [MinIO](https://github.com/minio/minio) buckets.
 
 ## Overview
 `s3fs-fuse-oidc-vault-minio-lib` is a shared library that performs credential processing of s3fs-fuse.
@@ -40,10 +40,23 @@ $ cmake --build build
 After that, you can find `liboidc-vault-minio.so` in `build` sub directory.
 
 ### Run s3fs
+You can set a profile to be sourced before s3fs-fuse execution in order to configure your environment.
+For example:
 ```
+$ cat oidc-vault-minio-profile 
+export OIDC_CLIENT_NAME="<your_oidc_client_name>"
+export VAULT_HOST="vault.example.com"
+export VAULT_PORT="443"
+export VAULT_ROLE="<your_organization_name>"
+export VAULT_TLS_ENABLE="true"
+export VAULT_TLS_VERIFY="true"
+export MINIO_HOST="minio.example.com"
+```
+Then, you can run s3fs-fuse in the following way:
+```
+$ source oidc-vault-minio-profile
 $ s3fs <bucket> <mountpoint> <options...> -o credlib=liboidc-vault-minio.so -o credlib_opts=Off
 ```
-
 To specify this `s3fs-fuse-oidc-vault-minio-lib` for s3fs, use the following options:
 
 #### credlib
