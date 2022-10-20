@@ -39,7 +39,7 @@ $ cmake --build build
 ```
 After that, you can find `liboidc-vault-minio.so` in `build` sub directory.
 
-### Run s3fs
+### Run s3fs-fuse
 You can set a profile to be sourced before s3fs-fuse execution in order to configure your environment.
 For example:
 ```
