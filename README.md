@@ -14,7 +14,7 @@ You can easily build and use `s3fs-fuse-oidc-vault-minio-lib` by following the s
 
 #### Install oidc-agent C++ API by apt-get on Ubuntu22.04
 ```
-$ sudo apt-get install liboidc-agent-dev
+$ sudo apt-get install liboidc-agent-dev oidc-agent
 ```
 
 #### Build and Install Hashicorp Vault C++ API on Ubuntu22.04
@@ -22,20 +22,31 @@ $ sudo apt-get install liboidc-agent-dev
 $ sudo apt-get install libcurl4-openssl-dev
 $ git clone https://github.com/abedra/libvault.git
 $ cd libvault
-$ mkdir build
+$ cmake -S . -B build
+$ cmake --build build
 $ cd build
-$ cmake ..
 $ make
 $ sudo make install
 ```
 
-#### Build s3fs-fuse-oidc-vault-minio-lib
+#### Build and Install nlohmann/json on Ubuntu22.04
 ```
-$ sudo apt-get install build-essential libxml2-dev pkg-config libssl-dev libfuse-dev 
+$ git clone https://github.com/nlohmann/json.git
+$ cd json
+$ cmake -S . -B build
+$ cmake --build build
+$ cd build
+$ make
+$ sudo make install
+```
+
+#### Build s3fs-fuse and s3fs-fuse-oidc-vault-minio-lib
+```
+$ sudo apt-get install autotools-dev automake build-essential libxml2-dev pkg-config libssl-dev libfuse-dev 
 $ git clone git@baltig.infn.it:fornari/s3fs-fuse-oidc-vault-minio-lib.git
 $ cd s3fs-fuse-oidc-vault-minio-lib
 $ cmake -S . -B build
-$ cmake --build build
+$ sudo cmake --build build
 ```
 After that, you can find `liboidc-vault-minio.so` in `build` sub directory.
 
