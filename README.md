@@ -19,7 +19,7 @@ $ sudo apt-get install liboidc-agent-dev
 
 #### Build and Install Hashicorp Vault C++ API on Ubuntu22.04
 ```
-$ sudo apt-get install libcurl4-gnutls-dev
+$ sudo apt-get install libcurl4-openssl-dev
 $ git clone https://github.com/abedra/libvault.git
 $ cd libvault
 $ mkdir build
@@ -31,6 +31,7 @@ $ sudo make install
 
 #### Build s3fs-fuse-oidc-vault-minio-lib
 ```
+$ sudo apt-get install build-essential libxml2-dev pkg-config libssl-dev libfuse-dev 
 $ git clone git@baltig.infn.it:fornari/s3fs-fuse-oidc-vault-minio-lib.git
 $ cd s3fs-fuse-oidc-vault-minio-lib
 $ cmake -S . -B build

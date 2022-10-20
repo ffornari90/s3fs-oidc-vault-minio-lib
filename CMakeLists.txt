@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-attributes")
 
+find_package(CURL)
+
 include(ExternalProject)
 
 ExternalProject_Add(s3fs-ggtakec
@@ -13,8 +15,6 @@ ExternalProject_Add(s3fs-ggtakec
     CONFIGURE_COMMAND cp -R ../s3fs-ggtakec/. . && ./autogen.sh
     COMMAND ./configure
 )
-
-find_package(CURL)
 
 #
 # Create version information
