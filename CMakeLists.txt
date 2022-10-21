@@ -12,8 +12,8 @@ include(ExternalProject)
 ExternalProject_Add(s3fs-ggtakec
     GIT_REPOSITORY https://github.com/ggtakec/s3fs-fuse
     GIT_TAG extcred_mod
-    CONFIGURE_COMMAND cp -R ../s3fs-ggtakec/. . && ./autogen.sh
-    COMMAND ./configure
+    CONFIGURE_COMMAND cp -R ../s3fs-ggtakec/. . && ./autogen.sh && ./configure
+    COMMAND make
 )
 
 #
@@ -63,4 +63,4 @@ target_link_libraries("${LIB_NAME}_test" ${LIB_NAME})
 #
 # Specify Install Folder
 #
-install(TARGETS "${LIB_NAME}" LIBRARY DESTINATION "${INSTALL_DIR}/lib")
+install(TARGETS "${LIB_NAME}" LIBRARY DESTINATION "/usr/local/lib")
