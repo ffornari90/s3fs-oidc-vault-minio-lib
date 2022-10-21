@@ -66,7 +66,7 @@ MINIO_HOST=minio.example.com
 ```
 Then, you can run s3fs-fuse in the following way:
 ```
-$ source oidc-vault-minio-profile
+$ export $(grep -v '^#' oidc-vault-minio-profile | xargs -d '\n')
 $ s3fs <bucket> <mountpoint> <options...> -o credlib=liboidc-vault-minio.so -o credlib_opts=Off
 ```
 To specify this `s3fs-fuse-oidc-vault-minio-lib` for s3fs, use the following options:
