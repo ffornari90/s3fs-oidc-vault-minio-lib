@@ -42,7 +42,7 @@ $ sudo make install
 
 #### Build s3fs-fuse and s3fs-fuse-oidc-vault-minio-lib
 ```
-$ sudo apt-get install autotools-dev automake build-essential libxml2-dev pkg-config libssl-dev libfuse-dev 
+$ sudo apt-get install autotools-dev automake build-essential libxml2-dev pkg-config libssl-dev libfuse-dev fuse
 $ git clone git@baltig.infn.it:fornari/s3fs-fuse-oidc-vault-minio-lib.git
 $ cd s3fs-fuse-oidc-vault-minio-lib
 $ cmake -S . -B build
