@@ -46,7 +46,8 @@ $ sudo apt-get install autotools-dev automake build-essential libxml2-dev pkg-co
 $ git clone git@baltig.infn.it:fornari/s3fs-fuse-oidc-vault-minio-lib.git
 $ cd s3fs-fuse-oidc-vault-minio-lib
 $ cmake -S . -B build
-$ sudo cmake --build build
+$ cd build
+$ sudo make install
 ```
 After that, you can find `liboidc-vault-minio.so` in `build` sub directory.
 
@@ -55,13 +56,13 @@ You can set a profile to be sourced before s3fs-fuse execution in order to confi
 For example:
 ```
 $ cat oidc-vault-minio-profile 
-export OIDC_CLIENT_NAME="<your_oidc_client_name>"
-export VAULT_HOST="vault.example.com"
-export VAULT_PORT="443"
-export VAULT_ROLE="<your_organization_name>"
-export VAULT_TLS_ENABLE="true"
-export VAULT_TLS_VERIFY="true"
-export MINIO_HOST="minio.example.com"
+OIDC_CLIENT_NAME=<your_oidc_client_name>
+VAULT_HOST=vault.example.com
+VAULT_PORT=443
+VAULT_ROLE=<your_organization_name>
+VAULT_TLS_ENABLE=true
+VAULT_TLS_VERIFY=true
+MINIO_HOST=minio.example.com
 ```
 Then, you can run s3fs-fuse in the following way:
 ```
