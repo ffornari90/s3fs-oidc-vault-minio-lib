@@ -4,7 +4,12 @@ Vault::Client configureClient(Vault::Host host, Vault::Port port,
                               bool enableTLS, bool enableTLSverification, bool debug,
                               std::string role, std::string accountname,
                               struct agent_response& agent_res) {
-  Vault::Config vaultConfig = Vault::ConfigBuilder().withHost(host).withPort(port).withTlsEnabled(enableTLS).withTlsVerification(enableTLSverification).withDebug(debug).build();
+  Vault::Config vaultConfig = Vault::ConfigBuilder()
+                              .withHost(host)
+                              .withPort(port)
+                              .withTlsEnabled(enableTLS)
+                              .withTlsVerification(enableTLSverification)
+                              .withDebug(debug).build();
   Vault::HttpErrorCallback httpErrorCallback = [&](std::string err) {
     std::cout << err << std::endl;
   };

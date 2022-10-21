@@ -6,6 +6,11 @@
 #include <string.h>
 #include <nlohmann/json.hpp>
 
+bool string2bool (const std::string &v)
+{
+    return !v.empty() && !(strcasecmp(v.c_str(), "false") == 0 || strcasecmp(v.c_str(), "0") == 0);
+}
+
 const char* VersionS3fsCredential(bool detail)
 {
         const char short_version_form[]  = "s3fs-fuse-oidc-vault-minio-lib : Version %s (%s)";
@@ -113,9 +118,8 @@ bool UpdateS3fsCredential(char** ppaccess_key_id, char** ppserect_access_key, ch
         auto logLevel = logger->ShowLogLevel();
         auto vault_debug = (logLevel == LogLevel::DEBUG) ? true : false;
 
-        bool vault_tls_enable_bool, vault_tls_verify_bool;
-        std::istringstream(vault_tls_enable) >> std::boolalpha >> vault_tls_enable_bool;
-        std::istringstream(vault_tls_verify) >> std::boolalpha >> vault_tls_verify_bool;
+        bool vault_tls_enable_bool = string2bool(vault_tls_enable);
+        bool vault_tls_verify_bool = string2bool(vault_tls_verify);
 
         // Get credentials
         auto vaultClient = configureClient(Vault::Host{vault_host}, Vault::Port{vault_port},
@@ -123,37 +127,39 @@ bool UpdateS3fsCredential(char** ppaccess_key_id, char** ppserect_access_key, ch
                                            vault_debug, vault_role, oidc_client_name, agent_res);
         auto minioCreds = readSecretValue(vaultClient, Vault::Path{vault_role});
 
-        nlohmann::json data = nlohmann::json::parse(minioCreds.value());
-        auto accessKeyId = data["data"]["accessKeyId"].get<std::string>();
-        auto secretKey = data["data"]["secretAccessKey"].get<std::string>();
+        if(!minioCreds.value().empty()){
+          nlohmann::json data = nlohmann::json::parse(minioCreds.value());
+          auto accessKeyId = data["data"]["accessKeyId"].get<std::string>();
+          auto secretKey = data["data"]["secretAccessKey"].get<std::string>();
 
-        // Set result buffers
-        *ppaccess_key_id        = strdup(accessKeyId.c_str());
-        *ppserect_access_key    = strdup(secretKey.c_str());
-        *ppaccess_token         = strdup(agent_res.token_response.token);
-        *ptoken_expire          = agent_res.token_response.expires_at;           // msec to unittime(s)
+          // Set result buffers
+          *ppaccess_key_id        = strdup(accessKeyId.c_str());
+          *ppserect_access_key    = strdup(secretKey.c_str());
+          *ppaccess_token         = strdup(agent_res.token_response.token);
+          *ptoken_expire          = agent_res.token_response.expires_at;
 
-        std::stringstream stream;
-        stream << *ppaccess_token;
-        std::string token_to_string;
-        token_to_string = stream.str();
+          std::stringstream stream;
+          stream << *ppaccess_token;
+          std::string token_to_string;
+          token_to_string = stream.str();
 
-        stream.str(std::string());
-        stream << *ptoken_expire;
-        std::string expiration_to_string;
-        expiration_to_string = stream.str();
+          stream.str(std::string());
+          stream << *ptoken_expire;
+          std::string expiration_to_string;
+          expiration_to_string = stream.str();
 
-        // For debug
-        logger->Log(__FILE__, __LINE__, "[s3fsoidcvaultminiocred] : Access Key Id = " + accessKeyId, LogLevel::DEBUG);
-        logger->Log(__FILE__, __LINE__, "[s3fsoidcvaultminiocred] : Secret Key    = " + secretKey, LogLevel::DEBUG);
-        logger->Log(__FILE__, __LINE__, "[s3fsoidcvaultminiocred] : Access Token  = " + token_to_string, LogLevel::DEBUG);
-        logger->Log(__FILE__, __LINE__, "[s3fsoidcvaultminiocred] : expiration    = " + expiration_to_string, LogLevel::DEBUG);
+          // For debug
+          logger->Log(__FILE__, __LINE__, "[s3fsoidcvaultminiocred] : Access Key Id = " + accessKeyId, LogLevel::DEBUG);
+          logger->Log(__FILE__, __LINE__, "[s3fsoidcvaultminiocred] : Secret Key    = " + secretKey, LogLevel::DEBUG);
+          logger->Log(__FILE__, __LINE__, "[s3fsoidcvaultminiocred] : Access Token  = " + token_to_string, LogLevel::DEBUG);
+          logger->Log(__FILE__, __LINE__, "[s3fsoidcvaultminiocred] : expiration    = " + expiration_to_string, LogLevel::DEBUG);
+        }
 
         auto result = true;
 
         if(!*ppaccess_key_id || !*ppserect_access_key || !*ppaccess_token){
                 if(pperrstr){
-                        *pperrstr = strdup("Cloud not allocate memory.");
+                        *pperrstr = strdup("Could not allocate memory.");
                 }
                 if(!*ppaccess_key_id){
                         free(*ppaccess_key_id);

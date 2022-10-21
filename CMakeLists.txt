@@ -5,7 +5,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-attributes")
 
-find_package(CURL)
+find_package(nlohmann_json 3.11.2 REQUIRED)
+find_package(CURL 7.81.0 REQUIRED)
 
 include(ExternalProject)
 
@@ -50,7 +51,7 @@ set(LIB_TYPE   "SHARED")
 #
 add_library(${LIB_NAME} ${LIB_TYPE} ${LIB_SRC})
 target_include_directories(${LIB_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} /usr/include /usr/local/include)
-target_link_libraries(${LIB_NAME} oidc-agent vault curl)
+target_link_libraries(${LIB_NAME} oidc-agent vault curl nlohmann_json::nlohmann_json)
 
 #
 # For building test file.
