@@ -8,9 +8,7 @@ std::optional<std::string> readSecretValue(const Vault::Client &vaultClient, con
   auto logger = Logger::GetInstance();
   if (vaultClient.is_authenticated()) {
     Vault::KeyValue keyValue{vaultClient, Vault::SecretMount{mount}, Vault::KeyValue::Version{version}};
-
     if (auto response = keyValue.read(path); response) {
-      logger->Log(__FILE__, __LINE__, "Secrets read successfully at " + path, LogLevel::INFO);
       if (nlohmann::json::accept(response.value())) {
         nlohmann::json data = nlohmann::json::parse(response.value());
         if (data.contains("data")) {
@@ -23,6 +21,7 @@ std::optional<std::string> readSecretValue(const Vault::Client &vaultClient, con
               std::ofstream ofs(home + s3fs_credfile, std::ofstream::trunc);
               ofs << access_key + ":" + secret_key + "\n";
               ofs.close();
+              logger->Log(__FILE__, __LINE__, "Secrets read successfully at " + path, LogLevel::INFO);
               return response.value();
             }
             else
