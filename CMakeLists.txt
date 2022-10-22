@@ -10,10 +10,9 @@ find_package(CURL 7.81.0 REQUIRED)
 
 include(ExternalProject)
 
-ExternalProject_Add(s3fs-ggtakec
-    GIT_REPOSITORY https://github.com/ggtakec/s3fs-fuse
-    GIT_TAG extcred_mod
-    CONFIGURE_COMMAND cp -R ../s3fs-ggtakec/. . && ./autogen.sh && ./configure
+ExternalProject_Add(s3fs-fuse
+    GIT_REPOSITORY https://github.com/s3fs-fuse/s3fs-fuse.git
+    CONFIGURE_COMMAND cp -R ../s3fs-fuse/. . && ./autogen.sh && ./configure
     COMMAND make
 )
 
