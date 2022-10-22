@@ -1,5 +1,6 @@
 build/*
 config.h
 commit_hash
+package.json
 product_version
 oidc-vault-minio-profile

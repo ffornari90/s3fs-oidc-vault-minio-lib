@@ -25,7 +25,6 @@ $ cd libvault
 $ cmake -S . -B build
 $ cmake --build build
 $ cd build
-$ make
 $ sudo make install
 ```
 
@@ -36,7 +35,6 @@ $ cd json
 $ cmake -S . -B build
 $ cmake --build build
 $ cd build
-$ make
 $ sudo make install
 ```
 
