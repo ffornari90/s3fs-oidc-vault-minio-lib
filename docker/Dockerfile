@@ -1,10 +1,10 @@
 FROM ubuntu:22.04
 ENV LD_LIBRARY_PATH=/usr/local/lib
 RUN apt-get update \
- && apt-get install -y sudo liboidc-agent-dev oidc-agent \
+ && apt-get install -y liboidc-agent-dev oidc-agent git cmake curl \
     libcurl4-openssl-dev autotools-dev automake build-essential \
-    libxml2-dev pkg-config libssl-dev libfuse-dev fuse \
-    git cmake curl
+    libxml2-dev pkg-config libssl-dev libfuse-dev fuse && \
+    apt-get clean
 RUN curl "https://ssl-tools.net/certificates/c2826e266d7405d34ef89762636ae4b36e86cb5e.pem" \
     -o /usr/local/share/ca-certificates/geant-ov-rsa-ca.crt && \
     update-ca-certificates
@@ -19,8 +19,6 @@ RUN git clone https://github.com/abedra/libvault.git && \
     cd build && make install && cd ../.. && \
     rm -rf libvault json s3fs-fuse-oidc-vault-minio-lib
 RUN adduser --disabled-password --gecos '' docker
-RUN adduser docker sudo
-RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER docker
 RUN mkdir -p $HOME/mnt/minio && \
     echo "access:secret" > $HOME/.passwd-s3fs && \
