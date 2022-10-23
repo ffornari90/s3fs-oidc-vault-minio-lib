@@ -27,7 +27,7 @@ pipeline {
                 script {
                     withCredentials([gitUsernamePassword(credentialsId: 'baltig')]) {
                         try {
-                            sh "rm -rf s3fs-fuse-oidc-vault-minio-lib/; git clone https://baltig.infn.it/fornari/s3fs-fuse-oidc-vault-minio-lib.git"
+                            sh "rm -rf s3fs-fuse-oidc-vault-minio-lib/ && git clone https://baltig.infn.it/fornari/s3fs-fuse-oidc-vault-minio-lib.git"
                         } catch (e) {
                             updateGitlabCommitStatus name: 'clone', state: 'failed'
                         }
@@ -39,7 +39,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh "cd s3fs-fuse-oidc-vault-minio-lib/; cmake -S . -B build; cd build; sudo make install"
+                        sh "cd s3fs-fuse-oidc-vault-minio-lib/ && cmake -S . -B build && cd build && sudo make install"
                     } catch (e) {
                         updateGitlabCommitStatus name: 'build', state: 'failed'
                     }
@@ -50,7 +50,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh "cd s3fs-fuse-oidc-vault-minio-lib/build; ./oidc-vault-minio_test"
+                        sh "cd s3fs-fuse-oidc-vault-minio-lib/build && ./oidc-vault-minio_test"
                     } catch (e) {
                         updateGitlabCommitStatus name: 'build', state: 'failed'
                     }
