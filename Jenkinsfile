@@ -1,9 +1,16 @@
 pipeline {
     environment {
-        s3fsImage = "ffornari/s3fs-oidc-vault-minio"
+        s3fsImage = 'ffornari/s3fs-oidc-vault-minio'
         registryCredential = 'dockerhub'
         gitCredential = 'baltig'
-        BUILD_VERSION = "latest"
+        BUILD_VERSION = 'latest'
+        OIDC_CLIENT_NAME = 'jenkins'
+        VAULT_HOST = 'vault-minio-ns.apps.cnsa.cr.cnaf.infn.it'
+        VAULT_PORT = '443'
+        VAULT_ROLE = 'indigo'
+        VAULT_TLS_ENABLE = 'true'
+        VAULT_TLS_VERIFY = 'false'
+        MINIO_HOST = 'minio-api-minio-ns.apps.cnsa.cr.cnaf.infn.it'
     }
     
     agent any
@@ -24,6 +31,28 @@ pipeline {
                         } catch (e) {
                             updateGitlabCommitStatus name: 'clone', state: 'failed'
                         }
+                    }
+                }
+            }
+        }
+        stage('Building the library') {
+            steps {
+                script {
+                    try {
+                        sh "cd s3fs-fuse-oidc-vault-minio-lib/; cmake -S . -B build; cd build; sudo make install"
+                    } catch (e) {
+                        updateGitlabCommitStatus name: 'build', state: 'failed'
+                    }
+                }
+            }
+        }
+        stage('Testing the library') {
+            steps {
+                script {
+                    try {
+                        sh "cd s3fs-fuse-oidc-vault-minio-lib/build; ./oidc-vault-minio_test"
+                    } catch (e) {
+                        updateGitlabCommitStatus name: 'build', state: 'failed'
                     }
                 }
             }
