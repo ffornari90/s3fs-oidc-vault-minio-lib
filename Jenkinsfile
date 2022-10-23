@@ -19,7 +19,7 @@ pipeline {
         stage('Initial update status on gitlab') {
             steps {
                 echo 'Notify GitLab'
-                updateGitlabCommitStatus name: 'build', state: 'pending'
+                updateGitlabCommitStatus name: 'start', state: 'pending'
             }
         }
         stage('Cloning git repo') {
@@ -27,7 +27,7 @@ pipeline {
                 script {
                     withCredentials([gitUsernamePassword(credentialsId: 'baltig')]) {
                         try {
-                            sh "rm -rf s3fs-fuse-oidc-vault-minio-lib/ && git clone https://baltig.infn.it/fornari/s3fs-fuse-oidc-vault-minio-lib.git"
+                            sh "sudo rm -rf s3fs-fuse-oidc-vault-minio-lib/ && git clone https://baltig.infn.it/fornari/s3fs-fuse-oidc-vault-minio-lib.git"
                         } catch (e) {
                             updateGitlabCommitStatus name: 'clone', state: 'failed'
                             sh "exit 1"
@@ -54,7 +54,7 @@ pipeline {
                     try {
                         sh "cd s3fs-fuse-oidc-vault-minio-lib/build && ./oidc-vault-minio_test"
                     } catch (e) {
-                        updateGitlabCommitStatus name: 'build', state: 'failed'
+                        updateGitlabCommitStatus name: 'test', state: 'failed'
                         sh "exit 1"
                     }
                 }
@@ -66,7 +66,7 @@ pipeline {
                     try {
                         sh "docker build -f s3fs-fuse-oidc-vault-minio-lib/docker/Dockerfile -t $s3fsImage:$BUILD_VERSION s3fs-fuse-oidc-vault-minio-lib/docker"
                     } catch (e) {
-                        updateGitlabCommitStatus name: 'build', state: 'failed'
+                        updateGitlabCommitStatus name: 'image', state: 'failed'
                         sh "exit 1"
                     }
                 }
@@ -113,7 +113,7 @@ pipeline {
         stage('Final update status on gitlab') {
             steps {
                 echo 'Notify GitLab'
-                updateGitlabCommitStatus name: 'build', state: 'success'
+                updateGitlabCommitStatus name: 'end', state: 'success'
             }
         }        
     }
