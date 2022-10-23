@@ -30,6 +30,7 @@ pipeline {
                             sh "rm -rf s3fs-fuse-oidc-vault-minio-lib/ && git clone https://baltig.infn.it/fornari/s3fs-fuse-oidc-vault-minio-lib.git"
                         } catch (e) {
                             updateGitlabCommitStatus name: 'clone', state: 'failed'
+                            sh "exit 1"
                         }
                     }
                 }
@@ -42,6 +43,7 @@ pipeline {
                         sh "cd s3fs-fuse-oidc-vault-minio-lib/ && cmake -S . -B build && cd build && sudo make install"
                     } catch (e) {
                         updateGitlabCommitStatus name: 'build', state: 'failed'
+                        sh "exit 1"
                     }
                 }
             }
@@ -53,6 +55,7 @@ pipeline {
                         sh "cd s3fs-fuse-oidc-vault-minio-lib/build && ./oidc-vault-minio_test"
                     } catch (e) {
                         updateGitlabCommitStatus name: 'build', state: 'failed'
+                        sh "exit 1"
                     }
                 }
             }
@@ -64,6 +67,7 @@ pipeline {
                         sh "docker build -f s3fs-fuse-oidc-vault-minio-lib/docker/Dockerfile -t $s3fsImage:$BUILD_VERSION s3fs-fuse-oidc-vault-minio-lib/docker"
                     } catch (e) {
                         updateGitlabCommitStatus name: 'build', state: 'failed'
+                        sh "exit 1"
                     }
                 }
             }
@@ -76,6 +80,7 @@ pipeline {
                             sh "docker login -u ${env.User} -p ${env.Password}"
                         } catch (e) {
                             updateGitlabCommitStatus name: 'login', state: 'failed'
+                            sh "exit 1"
                         }
                     }
                 }
@@ -88,6 +93,7 @@ pipeline {
                         sh "docker push $s3fsImage:$BUILD_VERSION"
                     } catch (e) {
                         updateGitlabCommitStatus name: 'push', state: 'failed'
+                        sh "exit 1"
                     }
                 }
             }
@@ -99,6 +105,7 @@ pipeline {
                         sh "docker rmi $s3fsImage:$BUILD_VERSION"
                     } catch (e) {
                         updateGitlabCommitStatus name: 'remove', state: 'failed'
+                        sh "exit 1"
                     }
                 }
             }
