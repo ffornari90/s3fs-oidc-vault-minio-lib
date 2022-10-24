@@ -14,12 +14,12 @@ You can easily build and use `s3fs-fuse-oidc-vault-minio-lib` by following the s
 
 #### Install oidc-agent C++ API by apt-get on Ubuntu22.04
 ```
-$ sudo apt-get install liboidc-agent-dev oidc-agent -y
+$ sudo apt-get install -y liboidc-agent-dev oidc-agent
 ```
 
 #### Build and Install Hashicorp Vault C++ API on Ubuntu22.04
 ```
-$ sudo apt-get install libcurl4-openssl-dev -y
+$ sudo apt-get install -y libcurl4-openssl-dev
 $ git clone https://github.com/abedra/libvault.git
 $ cd libvault
 $ cmake -S . -B build
@@ -40,7 +40,7 @@ $ sudo make install
 
 #### Build s3fs-fuse and s3fs-fuse-oidc-vault-minio-lib
 ```
-$ sudo apt-get install autotools-dev automake build-essential libxml2-dev pkg-config libssl-dev libfuse-dev fuse -y
+$ sudo apt-get install -y autotools-dev automake build-essential libxml2-dev pkg-config libssl-dev libfuse-dev fuse
 $ git clone git@baltig.infn.it:fornari/s3fs-fuse-oidc-vault-minio-lib.git
 $ cd s3fs-fuse-oidc-vault-minio-lib
 $ cmake -S . -B build
