@@ -77,7 +77,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh "cd s3fs-fuse-oidc-vault-minio-lib/build && oidc-token jenkins && ./oidc-vault-minio_test"
+                        sh "cd s3fs-fuse-oidc-vault-minio-lib/build && eval $(oidc-agent-service use) && oidc-token jenkins && ./oidc-vault-minio_test"
                     } catch (e) {
                         updateGitlabCommitStatus name: 'test', state: 'failed'
                         sh "exit 1"
