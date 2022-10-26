@@ -4,7 +4,7 @@ pipeline {
         registryCredential = 'dockerhub'
         gitCredential = 'baltig'
         BUILD_VERSION = 'latest'
-        OIDC_CLIENT_NAME = 'jenkins'
+        OIDC_CLIENT_NAME = 'jenkins-client'
         VAULT_HOST = 'vault-minio-ns.apps.cnsa.cr.cnaf.infn.it'
         VAULT_PORT = '443'
         VAULT_ROLE = 'indigo'
