@@ -13,7 +13,8 @@ RUN curl "https://ssl-tools.net/certificates/c2826e266d7405d34ef89762636ae4b36e8
     do filename="${f##*/}"; cp $f /usr/local/share/ca-certificates/"${filename%.*}.crt"; done && \
     update-ca-certificates
 RUN git clone https://github.com/abedra/libvault.git && \
-    cd libvault && cmake -S . -B build && cmake --build build && \
+    cd libvault && git checkout tags/0.51.0 && \
+    cmake -S . -B build && cmake --build build && \
     cd build && make install && cd ../.. && \
     git clone https://github.com/nlohmann/json.git && \
     cd json && cmake -S . -B build && cmake --build build && \

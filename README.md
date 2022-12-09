@@ -22,6 +22,7 @@ $ sudo apt-get install -y liboidc-agent-dev oidc-agent
 $ sudo apt-get install -y libcurl4-openssl-dev
 $ git clone https://github.com/abedra/libvault.git
 $ cd libvault
+$ git checkout tags/0.51.0
 $ cmake -S . -B build
 $ cmake --build build
 $ cd build
