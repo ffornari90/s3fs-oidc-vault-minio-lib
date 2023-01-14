@@ -1,9 +1,9 @@
 FROM ffornari/s3fs-ovm-dependencies:latest
 ENV LD_LIBRARY_PATH=/usr/local/lib
-RUN git clone https://baltig.infn.it/fornari/s3fs-fuse-oidc-vault-minio-lib.git && \
-    cd s3fs-fuse-oidc-vault-minio-lib && cmake -S . -B build && \
+RUN git clone https://baltig.infn.it/fornari/s3fs-oidc-vault-minio-lib.git && \
+    cd s3fs-oidc-vault-minio-lib && cmake -S . -B build && \
     cd build && make install && cd ../.. && \
-    rm -rf s3fs-fuse-oidc-vault-minio-lib
+    rm -rf s3fs-oidc-vault-minio-lib
 RUN adduser --disabled-password --gecos '' docker
 USER docker
 RUN mkdir -p $HOME/mnt/minio && \

@@ -13,9 +13,9 @@ bool string2bool (const std::string &v)
 
 const char* VersionS3fsCredential(bool detail)
 {
-        const char short_version_form[]  = "s3fs-fuse-oidc-vault-minio-lib : Version %s (%s)";
+        const char short_version_form[]  = "s3fs-oidc-vault-minio-lib : Version %s (%s)";
         const char detail_version_form[] =
-                "s3fs-fuse-oidc-vault-minio-lib : Version %s (%s)\n"
+                "s3fs-oidc-vault-minio-lib : Version %s (%s)\n"
                 "s3fs-fuse credential I/F library for MinIO using OIDC Auth against Vault\n"
                 "Copyright 2022 Federico Fornari <federico.fornari@cnaf.infn.it>\n";
 
