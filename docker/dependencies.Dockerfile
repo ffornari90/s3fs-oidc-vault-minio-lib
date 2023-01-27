@@ -4,8 +4,7 @@ RUN apt-get update \
     libcurl4-openssl-dev autotools-dev automake build-essential \
     libxml2-dev pkg-config libssl-dev libfuse-dev fuse fio && \
     apt-get clean
-RUN curl "https://ssl-tools.net/certificates/c2826e266d7405d34ef89762636ae4b36e86cb5e.pem" \
-    -o /usr/local/share/ca-certificates/geant-ov-rsa-ca.crt && \
+RUN curl "https://crt.sh/?d=2475254782" -o /usr/local/share/ca-certificates/geant-ov-rsa-ca.crt && \
     wget -q -O - "https://dist.eugridpma.info/distribution/igtf/current/GPG-KEY-EUGridPMA-RPM-3" | apt-key add - && \
     echo "deb http://repository.egi.eu/sw/production/cas/1/current egi-igtf core" > /etc/apt/sources.list.d/ca-repo.list && \
     apt-get update && apt-get install -y ca-policy-egi-core && apt-get clean && \
