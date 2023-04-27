@@ -27,7 +27,7 @@ include(ExternalProject)
 
 ExternalProject_Add(s3fs-fuse
     GIT_REPOSITORY https://github.com/s3fs-fuse/s3fs-fuse.git
-    GIT_TAG v1.91
+    GIT_TAG 5f5e69f72ff5da1c8e434ca639ee237ac506b605
     CONFIGURE_COMMAND cp -R ../s3fs-fuse/. . && ./autogen.sh && ./configure
     COMMAND make
 )
