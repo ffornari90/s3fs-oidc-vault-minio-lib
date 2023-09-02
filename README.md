@@ -1,4 +1,5 @@
 # s3fs-oidc-vault-minio-lib
+[![DOI](https://zenodo.org/badge/686307018.svg)](https://zenodo.org/badge/latestdoi/686307018)
 
 Authentication module using [indigo-dc/oidc-agent](https://github.com/indigo-dc/oidc-agent) and [Hashicorp Vault](https://github.com/hashicorp/vault) for [s3fs-fuse](https://github.com/s3fs-fuse/s3fs-fuse/) to locally mount [MinIO](https://github.com/minio/minio) buckets.
 
