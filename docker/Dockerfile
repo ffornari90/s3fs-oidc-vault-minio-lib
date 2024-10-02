@@ -1,6 +1,6 @@
 FROM ffornari/s3fs-ovm-dependencies:latest
 ENV LD_LIBRARY_PATH=/usr/local/lib
-RUN git clone https://baltig.infn.it/fornari/s3fs-oidc-vault-minio-lib.git && \
+RUN git clone https://github.com/ffornari90/s3fs-oidc-vault-minio-lib.git && \
     cd s3fs-oidc-vault-minio-lib && cmake -S . -B build && \
     cd build && make install && cd ../.. && \
     rm -rf s3fs-oidc-vault-minio-lib
@@ -11,7 +11,7 @@ RUN mkdir -p $HOME/mnt/minio && \
     chmod 600 $HOME/.passwd-s3fs
 CMD eval `oidc-agent` && \
   oidc-gen && \
-  s3fs bucket $HOME/mnt/minio \
+  s3fs $BUCKET_NAME $HOME/mnt/minio \
   -o use_path_request_style \
   -o url=https://$MINIO_HOST \
   -o no_check_certificate \
