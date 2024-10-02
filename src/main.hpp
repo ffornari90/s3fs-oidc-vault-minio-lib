@@ -7,13 +7,13 @@ extern "C" {
 
 Vault::Client configureClient(Vault::Host host, Vault::Port port,
                               bool enableTLS, bool enableTLSverification, bool debug,
-                              std::string role, std::string accountname, struct agent_response &agent_res);
+                              std::string role, std::string accountname, std::string audience, struct agent_response &agent_res);
 
 std::optional<std::string> readSecretValue(const Vault::Client &vaultClient, const Vault::Path path,
                                            const std::string mount = "minio/keys",
                                            const Vault::KeyValue::Version version = Vault::KeyValue::Version::v1);
 
-bool getOIDCToken(std::string accountname, struct agent_response &agent_res);
+bool getOIDCToken(std::string accountname, std::string audience, struct agent_response &agent_res);
 
 extern "C" {
 extern const char* VersionS3fsCredential(bool detail);

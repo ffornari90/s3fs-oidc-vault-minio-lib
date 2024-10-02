@@ -114,6 +114,7 @@ bool UpdateS3fsCredential(char** ppaccess_key_id, char** ppserect_access_key, ch
         auto vault_tls_enable = std::getenv("VAULT_TLS_ENABLE") ? std::getenv("VAULT_TLS_ENABLE") : "true";
         auto vault_tls_verify = std::getenv("VAULT_TLS_VERIFY") ? std::getenv("VAULT_TLS_VERIFY") : "true";
         auto oidc_client_name = std::getenv("OIDC_CLIENT_NAME") ? std::getenv("OIDC_CLIENT_NAME") : "";
+        auto audience = std::getenv("AUDIENCE") ? std::getenv("AUDIENCE") : "";
 
         auto logLevel = logger->ShowLogLevel();
         auto vault_debug = (logLevel == LogLevel::DEBUG) ? true : false;
@@ -124,7 +125,7 @@ bool UpdateS3fsCredential(char** ppaccess_key_id, char** ppserect_access_key, ch
         // Get credentials
         auto vaultClient = configureClient(Vault::Host{vault_host}, Vault::Port{vault_port},
                                            vault_tls_enable_bool, vault_tls_verify_bool,
-                                           vault_debug, vault_role, oidc_client_name, agent_res);
+                                           vault_debug, vault_role, oidc_client_name, audience, agent_res);
         auto minioCreds = readSecretValue(vaultClient, Vault::Path{vault_role});
 
         if(!minioCreds.value().empty()){

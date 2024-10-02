@@ -57,6 +57,7 @@ For example:
 ```
 $ cat oidc-vault-minio-profile 
 OIDC_CLIENT_NAME=<your_oidc_client_name>
+AUDIENCE=<audience>
 VAULT_HOST=vault.example.com
 VAULT_PORT=443
 VAULT_ROLE=<your_organization_name>
