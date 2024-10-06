@@ -6,7 +6,6 @@ Vault::Client configureClient(Vault::Host host, Vault::Port port,
                               struct agent_response& agent_res) {
   Vault::Config vaultConfig = Vault::ConfigBuilder()
                               .withHost(host)
-                              .withPort(port)
                               .withTlsEnabled(enableTLS)
                               .withTlsVerification(enableTLSverification)
                               .withDebug(debug).build();
